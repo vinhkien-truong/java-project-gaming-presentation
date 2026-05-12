@@ -25,72 +25,69 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ReviewService {
-    private final ReviewRepository repository;
-     private final GamePlatformRepository gpRepository;
-    private final UserRepository userRepository;
-    private final ReviewMapper mapper;
+	private final ReviewRepository repository;
+	private final GamePlatformRepository gpRepository;
+	private final UserRepository userRepository;
+	private final ReviewMapper mapper;
 
-        @Transactional(readOnly = true)
-        public List<ReviewResponseDTO> getAll() {
+	@Transactional(readOnly = true)
+	public List<ReviewResponseDTO> getAll() {
 
-        return repository.findAll()
-                .stream()
-                .map(mapper::toDTO)
-                .toList();
-    }
+		return repository.findAll()
+				.stream()
+				.map(mapper::toDTO)
+				.toList();
+	}
 
-        @Transactional(readOnly = true)
-        public ReviewResponseDTO getById(UUID id) {
+	@Transactional(readOnly = true)
+	public ReviewResponseDTO getById(UUID id) {
 
-        Review review = repository.findById(id)
-                .orElseThrow(() ->
-                        new ReviewNotFoundException(id));
+		Review review = repository.findById(id)
+				.orElseThrow(() -> new ReviewNotFoundException(id));
 
-        return mapper.toDTO(review);
-    }
+		return mapper.toDTO(review);
+	}
 
-        @Transactional
-        public ReviewResponseDTO create(ReviewCreateDTO dto) {
+	@Transactional
+	public ReviewResponseDTO create(ReviewCreateDTO dto) {
 
-        UUID gamePlatformId = dto.getGamePlatformId();
-        UUID userId = dto.getUserId();
+		UUID gamePlatformId = dto.getGamePlatformId();
+		UUID userId = dto.getUserId();
 
-        GamePlatform gp = gpRepository.findById(gamePlatformId)
-                .orElseThrow(() ->
-                        new GamePlatformNotFoundException(
-                                gamePlatformId
-                        ));
+		GamePlatform gp = gpRepository.findById(gamePlatformId)
+				.orElseThrow(() -> new GamePlatformNotFoundException(
+						gamePlatformId));
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(() ->
-                        new UserNotFoundException(userId));
+		User user = userRepository.findById(userId)
+				.orElseThrow(() -> new UserNotFoundException(userId));
 
-        Review review = Review.builder()
-                .rating(dto.getRating())
-                .comment(dto.getComment())
-                .gamePlatform(gp)
-                .user(user)
-                .build();
+		Review review = Review.builder()
+				.rating(dto.getRating())
+				.comment(dto.getComment())
+				.gamePlatform(gp)
+				.user(user)
+				.build();
 
-        return mapper.toDTO(repository.save(review));
-    }
+		return mapper.toDTO(repository.save(review));
+	}
 
-        @Transactional
-        public void delete(UUID id) {
+	@Transactional
+	public void delete(UUID id) {
 
-        Review review = repository.findById(id)
-                .orElseThrow(() ->
-                        new ReviewNotFoundException(id));
+		Review review = repository.findById(id)
+				.orElseThrow(() -> new ReviewNotFoundException(id));
 
-        repository.delete(review);
-        }
+		repository.delete(review);
+	}
 
-        @Transactional
-        public ReviewResponseDTO update(UUID id, ReviewUpdateDTO dto) {
-                Review review = repository.findById(id)
-                                .orElseThrow(() -> new ReviewNotFoundException(id));
-                if (dto.getRating() != null) review.setRating(dto.getRating());
-                if (dto.getComment() != null) review.setComment(dto.getComment());
-                return mapper.toDTO(repository.save(review));
-    }
+	@Transactional
+	public ReviewResponseDTO update(UUID id, ReviewUpdateDTO dto) {
+		Review review = repository.findById(id)
+				.orElseThrow(() -> new ReviewNotFoundException(id));
+		if (dto.getRating() != null)
+			review.setRating(dto.getRating());
+		if (dto.getComment() != null)
+			review.setComment(dto.getComment());
+		return mapper.toDTO(repository.save(review));
+	}
 }

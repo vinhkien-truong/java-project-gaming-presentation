@@ -1,8 +1,6 @@
 package com.game.hyf.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingConstants;
+import org.mapstruct.*;
 
 import com.game.hyf.dto.gameplatform.GamePlatformResponseDTO;
 import com.game.hyf.model.GamePlatform;
@@ -13,4 +11,7 @@ public interface GamePlatformMapper {
     @Mapping(source = "game.id", target = "gameId")
     @Mapping(source = "platform.id", target = "platformId")
     GamePlatformResponseDTO toDTO(GamePlatform gamePlatform);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void updateGamePlatformFromDto(@MappingTarget GamePlatform entity, GamePlatformResponseDTO dto);
 }

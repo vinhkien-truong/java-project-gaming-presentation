@@ -25,79 +25,76 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class GamePlatformService {
-    
-    private final GamePlatformRepository repository;
-    private final GamePlatformMapper mapper;
-    private final GameRepository gameRepository;
-    private final PlatformRepository platformRepository;
 
-        @Transactional(readOnly = true)
-        public List<GamePlatformResponseDTO> getAll() {
+	private final GamePlatformRepository repository;
+	private final GamePlatformMapper mapper;
+	private final GameRepository gameRepository;
+	private final PlatformRepository platformRepository;
 
-        return repository.findAll()
-                .stream()
-                .map(mapper::toDTO)
-                .toList();
-    }
+	@Transactional(readOnly = true)
+	public List<GamePlatformResponseDTO> getAll() {
 
-        @Transactional(readOnly = true)
-        public GamePlatformResponseDTO getById(UUID id) {
+		return repository.findAll()
+				.stream()
+				.map(mapper::toDTO)
+				.toList();
+	}
 
-        GamePlatform gp = repository.findById(id)
-                .orElseThrow(() ->
-                        new GamePlatformNotFoundException(id));
+	@Transactional(readOnly = true)
+	public GamePlatformResponseDTO getById(UUID id) {
 
-        return mapper.toDTO(gp);
-    }
-        @Transactional
-        public GamePlatformResponseDTO create(
-            GamePlatformCreateDTO dto
-    ) {
-        UUID gameId = dto.getGameId();
-        UUID platformId = dto.getPlatformId();
+		GamePlatform gp = repository.findById(id)
+				.orElseThrow(() -> new GamePlatformNotFoundException(id));
 
-        Game game = gameRepository.findById(gameId)
-                 .orElseThrow(() ->
-                         new GameNotFoundException(gameId));
+		return mapper.toDTO(gp);
+	}
 
-        Platform platform = platformRepository.findById(platformId)
-                .orElseThrow(() ->
-                        new PlatformNotFoundException(platformId));
-        boolean exists =
-                repository.existsByGameIdAndPlatformIdAndFormat(
-                        gameId,
-                        platformId,
-                        dto.getFormat()
-                );
-        if (exists) {
-            throw new IllegalArgumentException("GamePlatform already exists for the given game and platform");
-        }
-        GamePlatform gamePlatform = new GamePlatform();
+	@Transactional
+	public GamePlatformResponseDTO create(
+			GamePlatformCreateDTO dto) {
+		UUID gameId = dto.getGameId();
+		UUID platformId = dto.getPlatformId();
 
-        gamePlatform.setGame(game);
-        gamePlatform.setPlatform(platform);
-        gamePlatform.setPrice(dto.getPrice());
-        gamePlatform.setFormat(dto.getFormat());
+		Game game = gameRepository.findById(gameId)
+				.orElseThrow(() -> new GameNotFoundException(gameId));
 
-        return mapper.toDTO(repository.save(gamePlatform));
-    }
+		Platform platform = platformRepository.findById(platformId)
+				.orElseThrow(() -> new PlatformNotFoundException(platformId));
+		boolean exists = repository.existsByGameIdAndPlatformIdAndFormat(
+				gameId,
+				platformId,
+				dto.getFormat());
+		if (exists) {
+			throw new IllegalArgumentException(
+					"GamePlatform already exists for the given game and platform");
+		}
+		GamePlatform gamePlatform = new GamePlatform();
 
-        @Transactional
-        public void delete(UUID id) {
+		gamePlatform.setGame(game);
+		gamePlatform.setPlatform(platform);
+		gamePlatform.setPrice(dto.getPrice());
+		gamePlatform.setFormat(dto.getFormat());
 
-        GamePlatform gp = repository.findById(id)
-                .orElseThrow(() ->
-                        new GamePlatformNotFoundException(id));
+		return mapper.toDTO(repository.save(gamePlatform));
+	}
 
-        repository.delete(gp);
-    }
+	@Transactional
+	public void delete(UUID id) {
 
-    @Transactional
-    public GamePlatformResponseDTO update(UUID id, GamePlatformUpdateDTO dto) {
-        GamePlatform gp = repository.findById(id)
-                .orElseThrow(() -> new GamePlatformNotFoundException(id));
-        if (dto.getPrice() != null) gp.setPrice(dto.getPrice());
-        if (dto.getFormat() != null) gp.setFormat(dto.getFormat());
-        return mapper.toDTO(repository.save(gp));
-    }
+		GamePlatform gp = repository.findById(id)
+				.orElseThrow(() -> new GamePlatformNotFoundException(id));
+
+		repository.delete(gp);
+	}
+
+	@Transactional
+	public GamePlatformResponseDTO update(UUID id, GamePlatformUpdateDTO dto) {
+		GamePlatform gp = repository.findById(id)
+				.orElseThrow(() -> new GamePlatformNotFoundException(id));
+		if (dto.getPrice() != null)
+			gp.setPrice(dto.getPrice());
+		if (dto.getFormat() != null)
+			gp.setFormat(dto.getFormat());
+		return mapper.toDTO(repository.save(gp));
+	}
 }

@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class GameService {
-    
+
     private final GameRepository repository;
     private final GameMapper mapper;
 
@@ -35,8 +35,7 @@ public class GameService {
     public GameResponseDTO getGameById(UUID id) {
 
         Game game = repository.findById(id)
-                .orElseThrow(() ->
-                        new GameNotFoundException(id));
+                .orElseThrow(() -> new GameNotFoundException(id));
 
         return mapper.toDTO(game);
     }
@@ -53,8 +52,7 @@ public class GameService {
     public void delete(UUID id) {
 
         Game game = repository.findById(id)
-                .orElseThrow(() ->
-                        new GameNotFoundException(id));
+                .orElseThrow(() -> new GameNotFoundException(id));
 
         repository.delete(game);
     }
@@ -63,10 +61,14 @@ public class GameService {
     public GameResponseDTO update(UUID id, GameUpdateDTO dto) {
         Game game = repository.findById(id)
                 .orElseThrow(() -> new GameNotFoundException(id));
-        if (dto.getTitle() != null) game.setTitle(dto.getTitle());
-        if (dto.getReleaseDate() != null) game.setReleaseDate(dto.getReleaseDate());
-        if (dto.getDescription() != null) game.setDescription(dto.getDescription());
-        if (dto.getVersion() != null) game.setVersion(dto.getVersion());
+        if (dto.getTitle() != null)
+            game.setTitle(dto.getTitle());
+        if (dto.getReleaseDate() != null)
+            game.setReleaseDate(dto.getReleaseDate());
+        if (dto.getDescription() != null)
+            game.setDescription(dto.getDescription());
+        if (dto.getVersion() != null)
+            game.setVersion(dto.getVersion());
         return mapper.toDTO(repository.save(game));
     }
 }

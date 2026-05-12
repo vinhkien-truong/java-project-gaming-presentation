@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
     private final UserRepository repository;
     private final UserMapper mapper;
-   // private final PasswordEncoder passwordEncoder;
+    // private final PasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
     public List<UserResponseDTO> getAllUsers() {
@@ -37,8 +37,7 @@ public class UserService {
     public UserResponseDTO getUserById(UUID id) {
 
         User user = repository.findById(id)
-                .orElseThrow(() ->
-                            new UserNotFoundException(id));
+                .orElseThrow(() -> new UserNotFoundException(id));
 
         return mapper.toDTO(user);
     }
@@ -47,7 +46,7 @@ public class UserService {
     public UserResponseDTO create(UserCreateDTO dto) {
         User user = mapper.toEntity(dto);
         // Hash the password before saving
-       // user.setPassword(passwordEncoder.encode(user.getPassword()));
+        // user.setPassword(passwordEncoder.encode(user.getPassword()));
         return mapper.toDTO(repository.save(user));
     }
 
@@ -55,8 +54,7 @@ public class UserService {
     public void delete(UUID id) {
 
         User user = repository.findById(id)
-                .orElseThrow(() ->
-                        new UserNotFoundException(id));
+                .orElseThrow(() -> new UserNotFoundException(id));
 
         repository.delete(user);
     }
@@ -65,12 +63,17 @@ public class UserService {
     public UserResponseDTO update(UUID id, UserUpdateDTO dto) {
         User user = repository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
-        if (dto.getUsername() != null) user.setUsername(dto.getUsername());
-        if (dto.getEmail() != null) user.setEmail(dto.getEmail());
-        if (dto.getPassword() != null) user.setPassword(dto.getPassword());
-        if (dto.getRole() != null) user.setRole(dto.getRole());
-        if (dto.getCountry() != null) user.setCountry(dto.getCountry());
+        if (dto.getUsername() != null)
+            user.setUsername(dto.getUsername());
+        if (dto.getEmail() != null)
+            user.setEmail(dto.getEmail());
+        if (dto.getPassword() != null)
+            user.setPassword(dto.getPassword());
+        if (dto.getRole() != null)
+            user.setRole(dto.getRole());
+        if (dto.getCountry() != null)
+            user.setCountry(dto.getCountry());
         return mapper.toDTO(repository.save(user));
     }
-    
+
 }

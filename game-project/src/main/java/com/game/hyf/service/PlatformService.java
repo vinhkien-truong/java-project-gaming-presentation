@@ -34,8 +34,7 @@ public class PlatformService {
     public PlatformResponseDTO getById(UUID id) {
 
         Platform platform = repository.findById(id)
-                .orElseThrow(() ->
-                        new PlatformNotFoundException(id));
+                .orElseThrow(() -> new PlatformNotFoundException(id));
 
         return mapper.toDTO(platform);
     }
@@ -52,8 +51,7 @@ public class PlatformService {
     public void delete(UUID id) {
 
         Platform platform = repository.findById(id)
-                .orElseThrow(() ->
-                            new PlatformNotFoundException(id));
+                .orElseThrow(() -> new PlatformNotFoundException(id));
 
         repository.delete(platform);
     }
@@ -62,8 +60,10 @@ public class PlatformService {
     public PlatformResponseDTO update(UUID id, PlatformUpdateDTO dto) {
         Platform platform = repository.findById(id)
                 .orElseThrow(() -> new PlatformNotFoundException(id));
-        if (dto.getName() != null) platform.setName(dto.getName());
-        if (dto.getManufacturer() != null) platform.setManufacturer(dto.getManufacturer());
+        if (dto.getName() != null)
+            platform.setName(dto.getName());
+        if (dto.getManufacturer() != null)
+            platform.setManufacturer(dto.getManufacturer());
         return mapper.toDTO(repository.save(platform));
     }
 }
