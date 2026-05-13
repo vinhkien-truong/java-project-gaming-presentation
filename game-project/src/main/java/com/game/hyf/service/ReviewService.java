@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.game.hyf.dto.review.ReviewCreateDTO;
+import com.game.hyf.dto.review.ReviewDetailDTO;
 import com.game.hyf.dto.review.ReviewResponseDTO;
 import com.game.hyf.dto.review.ReviewUpdateDTO;
+import com.game.hyf.dto.review.reviewDetailDTO;
 import com.game.hyf.exception.GamePlatformNotFoundException;
 import com.game.hyf.exception.ReviewNotFoundException;
 import com.game.hyf.exception.UserNotFoundException;
@@ -31,22 +33,22 @@ public class ReviewService {
 	private final ReviewMapper mapper;
 
 	@Transactional(readOnly = true)
-	public List<ReviewResponseDTO> getAll() {
+	public List<ReviewDetailDTO> getAll() {
 
 		return repository.findAll()
 				.stream()
-				.map(mapper::toDTO)
+				.map(mapper::toDetailDTO)
 				.sorted((r1, r2) -> r2.getRating().compareTo(r1.getRating())) // Sort by rating descending
 				.toList();
 	}
 
 	@Transactional(readOnly = true)
-	public ReviewResponseDTO getById(UUID id) {
+	public ReviewDetailDTO getById(UUID id) {
 
 		Review review = repository.findById(id)
 				.orElseThrow(() -> new ReviewNotFoundException(id));
 
-		return mapper.toDTO(review);
+		return mapper.toDetailDTO(review);
 	}
 
 	@Transactional

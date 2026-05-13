@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.game.hyf.dto.review.ReviewCreateDTO;
+import com.game.hyf.dto.review.ReviewDetailDTO;
 import com.game.hyf.dto.review.ReviewResponseDTO;
 import com.game.hyf.service.ReviewService;
 import com.game.hyf.dto.review.ReviewUpdateDTO;
@@ -23,13 +24,13 @@ public class ReviewController {
     private final ReviewService service;
 
     @GetMapping
-    public ResponseEntity<List<ReviewResponseDTO>> getAll() {
+    public ResponseEntity<List<ReviewDetailDTO>> getAll() {
 
         return ResponseEntity.ok(service.getAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ReviewResponseDTO> getById(
+    public ResponseEntity<ReviewDetailDTO> getById(
             @PathVariable UUID id
     ) {
 

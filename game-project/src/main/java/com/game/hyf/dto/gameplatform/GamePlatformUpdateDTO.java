@@ -12,10 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class GamePlatformUpdateDTO {
-    
+public class GamePlatformUpdateDTO {  
         @Positive(message = "Price must be positive")
         Double price;
-
-        GameFormat format;
 }

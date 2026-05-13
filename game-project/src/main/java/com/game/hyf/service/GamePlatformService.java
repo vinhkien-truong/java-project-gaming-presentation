@@ -100,8 +100,6 @@ public class GamePlatformService {
 				.orElseThrow(() -> new GamePlatformNotFoundException(id));
 		if (dto.getPrice() != null)
 			gp.setPrice(dto.getPrice());
-		if (dto.getFormat() != null)
-			gp.setFormat(dto.getFormat());
 		return mapper.toDTO(repository.save(gp));
 	}
 }
