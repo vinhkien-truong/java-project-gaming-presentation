@@ -27,7 +27,7 @@ public class PlatformService {
         return repository.findAll()
                 .stream()
                 .map(mapper::toDTO)
-                .sorted((g1, g2) -> g1.getName().compareTo(g2.getName()))
+                .sorted((g1, g2) -> g1.getManufacturer().compareTo(g2.getManufacturer()))
                 .toList();
     }
 

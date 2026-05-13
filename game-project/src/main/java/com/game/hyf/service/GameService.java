@@ -45,8 +45,8 @@ public class GameService {
     public GameResponseDTO create(GameCreateDTO dto) {
 
         Game game = mapper.toEntity(dto);
-
-        return mapper.toDTO(repository.save(game));
+        //repository.save(game)
+        return mapper.toDTO(game);
     }
 
     @Transactional
@@ -70,6 +70,9 @@ public class GameService {
             game.setDescription(dto.getDescription());
         if (dto.getVersion() != null)
             game.setVersion(dto.getVersion());
-        return mapper.toDTO(repository.save(game));
+
+        //return mapper.toDTO(repository.save(game));
+        return mapper.toDTO(game); 
+        //No need to call save() because of @Transactional. The changes will be automatically detected and persisted when the transaction commits.
     }
 }

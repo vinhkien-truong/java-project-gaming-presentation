@@ -10,4 +10,5 @@ import com.game.hyf.model.User;
 public interface UserRepository extends JpaRepository<User, UUID> {
     boolean existsByEmail(String email);
     Optional<User> findByEmail(String email);
+    boolean existsByUsername(String username);
 }

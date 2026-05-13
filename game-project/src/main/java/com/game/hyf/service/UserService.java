@@ -37,6 +37,7 @@ public class UserService {
         return repository.findAll()
                 .stream()
                 .map(mapper::toDTO)
+                .sorted((u1, u2) -> u1.getUsername().compareTo(u2.getUsername()))
                 .toList();
     }
 
@@ -53,6 +54,9 @@ public class UserService {
     public UserResponseDTO create(UserCreateDTO dto) {
         if(repository.existsByEmail(dto.getEmail())) {
             throw new IllegalArgumentException("Email already exists");
+        }
+        if(repository.existsByUsername(dto.getUsername())) {
+            throw new IllegalArgumentException("Username already exists");
         }
         User user = mapper.toEntity(dto);
         user.setPassword(passwordEncoder.encode(user.getPassword()));

@@ -33,8 +33,8 @@ public class SecurityConfig {
                                 "/api/game-platforms/**")
                         .permitAll()
 
-                        // 3. Admin-only Management (Users and all Deletions)
-                        .requestMatchers("/api/users/**").hasRole("ADMIN")
+                        // 3. Admin and moderator-only endpoints
+                        .requestMatchers("/api/users/**").hasAnyRole("ADMIN", "MODERATOR")
                         .requestMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN")
 
                         // 4. Everything else (POST/PATCH/PUT) requires login
