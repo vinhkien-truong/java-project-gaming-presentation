@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.game.hyf.dto.gameplatform.GamePlatformCreateDTO;
+import com.game.hyf.dto.gameplatform.GamePlatformDetailDTO;
 import com.game.hyf.dto.gameplatform.GamePlatformResponseDTO;
 import com.game.hyf.dto.gameplatform.GamePlatformUpdateDTO;
 import com.game.hyf.exception.GameNotFoundException;
@@ -32,21 +33,27 @@ public class GamePlatformService {
 	private final PlatformRepository platformRepository;
 
 	@Transactional(readOnly = true)
-	public List<GamePlatformResponseDTO> getAll() {
-
+	public List<GamePlatformDetailDTO> getAll() {
 		return repository.findAll()
 				.stream()
-				.map(mapper::toDTO)
+				.map(mapper::toDetailDTO)
+				.sorted((a, b) -> {
+					int gameNameComparison = a.getGameName().compareToIgnoreCase(b.getGameName());
+					if (gameNameComparison != 0) {
+						return gameNameComparison;
+					}
+					return a.getManufacturer().compareToIgnoreCase(b.getManufacturer());
+				})
 				.toList();
 	}
 
 	@Transactional(readOnly = true)
-	public GamePlatformResponseDTO getById(UUID id) {
+	public GamePlatformDetailDTO getById(UUID id) {
 
 		GamePlatform gp = repository.findById(id)
 				.orElseThrow(() -> new GamePlatformNotFoundException(id));
 
-		return mapper.toDTO(gp);
+		return mapper.toDetailDTO(gp);
 	}
 
 	@Transactional
