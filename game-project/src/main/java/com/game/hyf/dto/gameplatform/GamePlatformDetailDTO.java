@@ -1,7 +1,9 @@
 package com.game.hyf.dto.gameplatform;
 
+import java.util.List;
 import java.util.UUID;
 
+import com.game.hyf.dto.review.ReviewSummaryDTO;
 import com.game.hyf.model.GameFormat;
 
 import lombok.AllArgsConstructor;
@@ -22,4 +24,5 @@ public class GamePlatformDetailDTO {
     private String manufacturer;
     private Double price;
     private GameFormat format;
+    private List<ReviewSummaryDTO> reviews;
 }

@@ -14,38 +14,19 @@ import com.game.hyf.model.GamePlatform;
 
 public interface GamePlatformRepository extends JpaRepository<GamePlatform, UUID> {
     boolean existsByGameIdAndPlatformIdAndFormat(UUID gameId, UUID platformId, GameFormat format);
-    @Query("""
-        SELECT new com.game.hyf.dto.gameplatform.GamePlatformDetailDTO(
-            gp.id, 
-            g.id,
-            p.id,
-            g.title, 
-            p.name,
-            p.manufacturer,
-            gp.price, 
-            gp.format
-        )
-        FROM GamePlatform gp
-        JOIN gp.game g
-        JOIN gp.platform p
-        WHERE gp.id = :id
-    """)
-    Optional<GamePlatformDetailDTO> findDetailById(@Param("id") UUID id);
+    @Query("SELECT gp FROM GamePlatform gp " +
+           "LEFT JOIN FETCH gp.game " +
+           "LEFT JOIN FETCH gp.platform " +
+           "LEFT JOIN FETCH gp.reviews " +
+           "WHERE gp.id = :id")
+    Optional<GamePlatform> findDetailById(@Param("id") UUID id);
 
-    @Query("""
-    SELECT new com.game.hyf.dto.gameplatform.GamePlatformDetailDTO(
-        gp.id, 
-        g.id, 
-        p.id, 
-        g.title, 
-        p.name,
-        p.manufacturer,
-        gp.price, 
-        gp.format
-    )
-    FROM GamePlatform gp
-    JOIN gp.game g
-    JOIN gp.platform p
-    """)
-    List<GamePlatformDetailDTO> findAllDetails();
+    @Query("SELECT gp FROM GamePlatform gp " +
+           "LEFT JOIN FETCH gp.game " +
+           "LEFT JOIN FETCH gp.platform " +
+           "LEFT JOIN FETCH gp.reviews")
+    List<GamePlatform> findAllWithDetails();
+
+  @Query("SELECT gp FROM GamePlatform gp LEFT JOIN FETCH gp.reviews WHERE gp.id = :id")
+    Optional<GamePlatform> findByIdWithReviews(@Param("id") UUID id);
 }

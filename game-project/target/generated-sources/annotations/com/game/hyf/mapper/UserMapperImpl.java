@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-05-13T01:45:53+0200",
-    comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.46.0.v20260407-0427, environment: Java 21.0.10 (Eclipse Adoptium)"
+    date = "2026-05-13T16:31:30+0200",
+    comments = "version: 1.6.3, compiler: javac, environment: Java 25.0.2 (Homebrew)"
 )
 @Component
 public class UserMapperImpl implements UserMapper {
@@ -22,11 +22,11 @@ public class UserMapperImpl implements UserMapper {
 
         User user = new User();
 
-        user.setCountry( dto.getCountry() );
+        user.setUsername( dto.getUsername() );
         user.setEmail( dto.getEmail() );
         user.setPassword( dto.getPassword() );
         user.setRole( dto.getRole() );
-        user.setUsername( dto.getUsername() );
+        user.setCountry( dto.getCountry() );
 
         return user;
     }
@@ -40,14 +40,14 @@ public class UserMapperImpl implements UserMapper {
         UserResponseDTO.UserResponseDTOBuilder userResponseDTO = UserResponseDTO.builder();
 
         userResponseDTO.id( user.getId() );
-        userResponseDTO.country( user.getCountry() );
-        userResponseDTO.createdAt( user.getCreatedAt() );
+        userResponseDTO.username( user.getUsername() );
         userResponseDTO.email( user.getEmail() );
         if ( user.getRole() != null ) {
             userResponseDTO.role( user.getRole().name() );
         }
+        userResponseDTO.country( user.getCountry() );
+        userResponseDTO.createdAt( user.getCreatedAt() );
         userResponseDTO.updatedAt( user.getUpdatedAt() );
-        userResponseDTO.username( user.getUsername() );
 
         return userResponseDTO.build();
     }
@@ -58,8 +58,8 @@ public class UserMapperImpl implements UserMapper {
             return;
         }
 
-        if ( dto.getCountry() != null ) {
-            entity.setCountry( dto.getCountry() );
+        if ( dto.getUsername() != null ) {
+            entity.setUsername( dto.getUsername() );
         }
         if ( dto.getEmail() != null ) {
             entity.setEmail( dto.getEmail() );
@@ -70,8 +70,8 @@ public class UserMapperImpl implements UserMapper {
         if ( dto.getRole() != null ) {
             entity.setRole( dto.getRole() );
         }
-        if ( dto.getUsername() != null ) {
-            entity.setUsername( dto.getUsername() );
+        if ( dto.getCountry() != null ) {
+            entity.setCountry( dto.getCountry() );
         }
     }
 }

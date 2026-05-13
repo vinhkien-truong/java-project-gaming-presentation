@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-05-13T01:45:53+0200",
-    comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.46.0.v20260407-0427, environment: Java 21.0.10 (Eclipse Adoptium)"
+    date = "2026-05-13T16:31:30+0200",
+    comments = "version: 1.6.3, compiler: javac, environment: Java 25.0.2 (Homebrew)"
 )
 @Component
 public class GameMapperImpl implements GameMapper {
@@ -22,9 +22,9 @@ public class GameMapperImpl implements GameMapper {
 
         Game game = new Game();
 
-        game.setDescription( dto.getDescription() );
-        game.setReleaseDate( dto.getReleaseDate() );
         game.setTitle( dto.getTitle() );
+        game.setReleaseDate( dto.getReleaseDate() );
+        game.setDescription( dto.getDescription() );
         game.setVersion( dto.getVersion() );
 
         return game;
@@ -38,12 +38,12 @@ public class GameMapperImpl implements GameMapper {
 
         GameResponseDTO.GameResponseDTOBuilder gameResponseDTO = GameResponseDTO.builder();
 
-        gameResponseDTO.createdAt( game.getCreatedAt() );
-        gameResponseDTO.description( game.getDescription() );
         gameResponseDTO.id( game.getId() );
-        gameResponseDTO.releaseDate( game.getReleaseDate() );
         gameResponseDTO.title( game.getTitle() );
+        gameResponseDTO.releaseDate( game.getReleaseDate() );
+        gameResponseDTO.description( game.getDescription() );
         gameResponseDTO.version( game.getVersion() );
+        gameResponseDTO.createdAt( game.getCreatedAt() );
 
         return gameResponseDTO.build();
     }
@@ -54,14 +54,14 @@ public class GameMapperImpl implements GameMapper {
             return;
         }
 
-        if ( dto.getDescription() != null ) {
-            entity.setDescription( dto.getDescription() );
+        if ( dto.getTitle() != null ) {
+            entity.setTitle( dto.getTitle() );
         }
         if ( dto.getReleaseDate() != null ) {
             entity.setReleaseDate( dto.getReleaseDate() );
         }
-        if ( dto.getTitle() != null ) {
-            entity.setTitle( dto.getTitle() );
+        if ( dto.getDescription() != null ) {
+            entity.setDescription( dto.getDescription() );
         }
         if ( dto.getVersion() != null ) {
             entity.setVersion( dto.getVersion() );

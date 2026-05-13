@@ -2,35 +2,25 @@ package com.game.hyf.mapper;
 
 import com.game.hyf.dto.gameplatform.GamePlatformDetailDTO;
 import com.game.hyf.dto.gameplatform.GamePlatformResponseDTO;
+import com.game.hyf.dto.review.ReviewSummaryDTO;
 import com.game.hyf.model.Game;
 import com.game.hyf.model.GamePlatform;
 import com.game.hyf.model.Platform;
+import com.game.hyf.model.Review;
+import com.game.hyf.model.User;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-05-13T15:05:13+0200",
+    date = "2026-05-13T16:40:22+0200",
     comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.46.0.v20260407-0427, environment: Java 21.0.10 (Eclipse Adoptium)"
 )
 @Component
 public class GamePlatformMapperImpl implements GamePlatformMapper {
-
-    @Override
-    public GamePlatform toEntity(GamePlatformResponseDTO dto) {
-        if ( dto == null ) {
-            return null;
-        }
-
-        GamePlatform.GamePlatformBuilder gamePlatform = GamePlatform.builder();
-
-        gamePlatform.id( dto.getId() );
-        gamePlatform.price( dto.getPrice() );
-        gamePlatform.format( dto.getFormat() );
-
-        return gamePlatform.build();
-    }
 
     @Override
     public GamePlatformResponseDTO toDTO(GamePlatform gamePlatform) {
@@ -65,8 +55,39 @@ public class GamePlatformMapperImpl implements GamePlatformMapper {
         gamePlatformDetailDTO.id( gamePlatform.getId() );
         gamePlatformDetailDTO.price( gamePlatform.getPrice() );
         gamePlatformDetailDTO.format( gamePlatform.getFormat() );
+        gamePlatformDetailDTO.reviews( reviewListToReviewSummaryDTOList( gamePlatform.getReviews() ) );
 
         return gamePlatformDetailDTO.build();
+    }
+
+    @Override
+    public ReviewSummaryDTO toReviewSummaryDTO(Review review) {
+        if ( review == null ) {
+            return null;
+        }
+
+        ReviewSummaryDTO.ReviewSummaryDTOBuilder reviewSummaryDTO = ReviewSummaryDTO.builder();
+
+        reviewSummaryDTO.username( reviewUserUsername( review ) );
+        reviewSummaryDTO.rating( review.getRating() );
+        reviewSummaryDTO.comment( review.getComment() );
+
+        return reviewSummaryDTO.build();
+    }
+
+    @Override
+    public GamePlatform toEntity(GamePlatformResponseDTO dto) {
+        if ( dto == null ) {
+            return null;
+        }
+
+        GamePlatform.GamePlatformBuilder gamePlatform = GamePlatform.builder();
+
+        gamePlatform.id( dto.getId() );
+        gamePlatform.price( dto.getPrice() );
+        gamePlatform.format( dto.getFormat() );
+
+        return gamePlatform.build();
     }
 
     @Override
@@ -124,5 +145,26 @@ public class GamePlatformMapperImpl implements GamePlatformMapper {
             return null;
         }
         return platform.getManufacturer();
+    }
+
+    protected List<ReviewSummaryDTO> reviewListToReviewSummaryDTOList(List<Review> list) {
+        if ( list == null ) {
+            return null;
+        }
+
+        List<ReviewSummaryDTO> list1 = new ArrayList<ReviewSummaryDTO>( list.size() );
+        for ( Review review : list ) {
+            list1.add( toReviewSummaryDTO( review ) );
+        }
+
+        return list1;
+    }
+
+    private String reviewUserUsername(Review review) {
+        User user = review.getUser();
+        if ( user == null ) {
+            return null;
+        }
+        return user.getUsername();
     }
 }

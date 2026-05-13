@@ -4,22 +4,34 @@ import org.mapstruct.*;
 
 import com.game.hyf.dto.gameplatform.GamePlatformDetailDTO;
 import com.game.hyf.dto.gameplatform.GamePlatformResponseDTO;
+import com.game.hyf.dto.review.ReviewSummaryDTO;
 import com.game.hyf.model.GamePlatform;
+import com.game.hyf.model.Review;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface GamePlatformMapper {
-    GamePlatform toEntity(GamePlatformResponseDTO dto);
+
+    // 1. Basic DTO mapping
     @Mapping(source = "game.id", target = "gameId")
     @Mapping(source = "platform.id", target = "platformId")
     GamePlatformResponseDTO toDTO(GamePlatform gamePlatform);
 
-    //source is from entity, target is from DTO
+    // 2. Detail DTO mapping (The one with the list)
     @Mapping(source = "game.id", target = "gameId")
     @Mapping(source = "platform.id", target = "platformId")
     @Mapping(source = "game.title", target = "gameName")
     @Mapping(source = "platform.name", target = "platformName")
     @Mapping(source = "platform.manufacturer", target = "manufacturer")
+    // REMOVED: @Mapping(source = "reviews", target = "reviews") 
+    // MapStruct handles List<Review> to List<ReviewSummaryDTO> automatically 
+    // because you have the toReviewSummaryDTO method below.
     GamePlatformDetailDTO toDetailDTO(GamePlatform gamePlatform);
+
+    // 3. Individual Review mapping
+    @Mapping(source = "user.username", target = "username")
+    ReviewSummaryDTO toReviewSummaryDTO(Review review);
+
+    GamePlatform toEntity(GamePlatformResponseDTO dto);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateGamePlatformFromDto(@MappingTarget GamePlatform entity, GamePlatformResponseDTO dto);

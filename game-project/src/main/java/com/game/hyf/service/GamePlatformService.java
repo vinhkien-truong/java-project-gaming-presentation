@@ -2,6 +2,7 @@ package com.game.hyf.service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,7 @@ import com.game.hyf.repository.GamePlatformRepository;
 import com.game.hyf.repository.GameRepository;
 import com.game.hyf.repository.PlatformRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -34,26 +36,26 @@ public class GamePlatformService {
 
 	@Transactional(readOnly = true)
 	public List<GamePlatformDetailDTO> getAll() {
-		return repository.findAll()
-				.stream()
-				.map(mapper::toDetailDTO)
-				.sorted((a, b) -> {
-					int gameNameComparison = a.getGameName().compareToIgnoreCase(b.getGameName());
-					if (gameNameComparison != 0) {
-						return gameNameComparison;
-					}
-					return a.getManufacturer().compareToIgnoreCase(b.getManufacturer());
-				})
-				.toList();
+		List<GamePlatform> entities = repository.findAllWithDetails();
+		return entities.stream()
+                   .map(mapper::toDetailDTO)
+				   .sorted((a, b) -> {
+						int gameNameComparison = a.getGameName().compareToIgnoreCase(b.getGameName());
+						if (gameNameComparison != 0) {
+							return gameNameComparison;
+						}
+						return a.getManufacturer().compareToIgnoreCase(b.getManufacturer());
+					})
+                   .collect(Collectors.toList());
 	}
 
 	@Transactional(readOnly = true)
 	public GamePlatformDetailDTO getById(UUID id) {
 
-		GamePlatform gp = repository.findById(id)
-				.orElseThrow(() -> new GamePlatformNotFoundException(id));
-
-		return mapper.toDetailDTO(gp);
+		GamePlatform entity = repository.findDetailById(id)
+        .orElseThrow(() -> new EntityNotFoundException("Platform not found"));
+        
+    	return mapper.toDetailDTO(entity);
 	}
 
 	@Transactional

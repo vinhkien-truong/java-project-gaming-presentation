@@ -1,5 +1,6 @@
 package com.game.hyf.model;
 
+import java.util.List;
 import java.util.UUID;
 
 import jakarta.persistence.*;
@@ -42,4 +43,7 @@ public class GamePlatform {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "plat_id", nullable = false)
     private Platform platform;
+
+    @OneToMany(mappedBy = "gamePlatform") 
+    private List<Review> reviews;
 }

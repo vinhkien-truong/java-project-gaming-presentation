@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-05-13T01:45:53+0200",
-    comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.46.0.v20260407-0427, environment: Java 21.0.10 (Eclipse Adoptium)"
+    date = "2026-05-13T16:31:30+0200",
+    comments = "version: 1.6.3, compiler: javac, environment: Java 25.0.2 (Homebrew)"
 )
 @Component
 public class PlatformMapperImpl implements PlatformMapper {
@@ -22,8 +22,8 @@ public class PlatformMapperImpl implements PlatformMapper {
 
         Platform platform = new Platform();
 
-        platform.setManufacturer( dto.getManufacturer() );
         platform.setName( dto.getName() );
+        platform.setManufacturer( dto.getManufacturer() );
 
         return platform;
     }
@@ -36,10 +36,10 @@ public class PlatformMapperImpl implements PlatformMapper {
 
         PlatformResponseDTO.PlatformResponseDTOBuilder platformResponseDTO = PlatformResponseDTO.builder();
 
-        platformResponseDTO.createdAt( platform.getCreatedAt() );
         platformResponseDTO.id( platform.getId() );
-        platformResponseDTO.manufacturer( platform.getManufacturer() );
         platformResponseDTO.name( platform.getName() );
+        platformResponseDTO.manufacturer( platform.getManufacturer() );
+        platformResponseDTO.createdAt( platform.getCreatedAt() );
         platformResponseDTO.updatedAt( platform.getUpdatedAt() );
 
         return platformResponseDTO.build();
@@ -51,11 +51,11 @@ public class PlatformMapperImpl implements PlatformMapper {
             return;
         }
 
-        if ( dto.getManufacturer() != null ) {
-            entity.setManufacturer( dto.getManufacturer() );
-        }
         if ( dto.getName() != null ) {
             entity.setName( dto.getName() );
+        }
+        if ( dto.getManufacturer() != null ) {
+            entity.setManufacturer( dto.getManufacturer() );
         }
     }
 }
