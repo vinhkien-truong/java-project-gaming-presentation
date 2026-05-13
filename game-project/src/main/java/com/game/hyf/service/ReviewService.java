@@ -36,6 +36,7 @@ public class ReviewService {
 		return repository.findAll()
 				.stream()
 				.map(mapper::toDTO)
+				.sorted((r1, r2) -> r2.getRating().compareTo(r1.getRating())) // Sort by rating descending
 				.toList();
 	}
 

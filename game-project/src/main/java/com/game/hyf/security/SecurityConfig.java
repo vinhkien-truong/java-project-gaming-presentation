@@ -21,31 +21,26 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-        .csrf(csrf -> csrf.disable())
-        .sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .authorizeHttpRequests(auth -> auth
-                // 1. PUBLIC: Anyone can register or see login page
-                .requestMatchers("/api/v1/auth/login").permitAll()
-                .requestMatchers("/api/v1/auth/register").permitAll()
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
+                        // 1. Static Public Endpoints
+                        .requestMatchers("/api/v1/auth/**", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
+                        .requestMatchers("/api/v1/auth/refresh").permitAll()
+                        // 2. Global "Read-Only" is Public
+                        .requestMatchers(HttpMethod.GET, "/api/games/**", "/api/platforms/**", "/api/reviews/**",
+                                "/api/game-platforms/**")
+                        .permitAll()
 
-                // 2. ADMIN ONLY: Only users with the ADMIN role can delete or view all users
-                .requestMatchers(HttpMethod.DELETE, "/api/users/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.GET, "/api/users").hasRole("ADMIN")
+                        // 3. Admin-only Management (Users and all Deletions)
+                        .requestMatchers("/api/users/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN")
 
-                // 3. PUBLIC GAMES: Anyone can view games, but only authenticated users can create/update/delete
-                .requestMatchers(HttpMethod.GET, "/api/games/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/games").authenticated()
-                .requestMatchers(HttpMethod.PUT, "/api/games/**").authenticated()
-                .requestMatchers(HttpMethod.DELETE, "/api/games/**").hasRole("ADMIN")
+                        // 4. Everything else (POST/PATCH/PUT) requires login
+                        .anyRequest().authenticated())
 
-                // 4. SWAGGER: Usually permit all for development
-                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-
-                // 5. SECURE EVERYTHING ELSE
-                .anyRequest().authenticated())
-        
-        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

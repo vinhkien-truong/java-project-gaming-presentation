@@ -28,6 +28,7 @@ public class GameService {
         return repository.findAll()
                 .stream()
                 .map(mapper::toDTO)
+                .sorted((g1, g2) -> g1.getTitle().compareTo(g2.getTitle()))
                 .toList();
     }
 

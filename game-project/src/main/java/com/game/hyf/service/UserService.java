@@ -58,8 +58,8 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return mapper.toDTO(repository.save(user));
     }
-
- 
+    //transactional is needed because creating a token is a Write operation. You should add @Transactional here to ensure the login process and token creation are treated as one solid unit.
+    @Transactional
     public LoginResponseDTO login(LoginRequestDTO dto) {
         //make both exceptions the same to avoid giving hints to the attacker about which one is wrong
         User user = repository.findByEmail(dto.getEmail())
@@ -108,6 +108,7 @@ public class UserService {
      *
      * Throws IllegalArgumentException if the refresh token is invalid or expired.
      */
+    @Transactional //This is a high-security method. You are validating, deleting an old token, and creating a new one (Rotation) If the deletion succeeds but the creation fails, the user is logged out and can't get back in.
     public LoginResponseDTO refresh(String refreshTokenValue) {
         // validate() throws if the token doesn't exist in DB or is expired
         RefreshToken refreshToken = refreshTokenService.validate(refreshTokenValue);
@@ -132,6 +133,7 @@ public class UserService {
      * Their current access token will keep working until it naturally expires
      * (up to 15 minutes) — that is an accepted trade-off with stateless JWTs.
      */
+    @Transactional
     public void logout(User user) {
         refreshTokenService.deleteByUser(user);
     }
