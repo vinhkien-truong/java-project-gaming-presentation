@@ -1,5 +1,9 @@
 package com.game.hyf.dto.user;
 
+import com.game.hyf.model.UserRole;
+
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -26,8 +30,8 @@ public class UserCreateDTO {
     @NotBlank(message = "Password is required")
     String password;
 
-    @NotBlank(message = "Role is required")
-    String role;
+    @Enumerated(EnumType.STRING)
+    UserRole role;
 
     @NotBlank(message = "Country is required")
     String country;

@@ -1,4 +1,6 @@
 /Users/Kien/Documents/hyf java/projectHYF/finalProjectGameHYF/game-project/src/main/java/com/game/hyf/GameApplication.java
+/Users/Kien/Documents/hyf java/projectHYF/finalProjectGameHYF/game-project/src/main/java/com/game/hyf/aspects/ExceptionHandlingAspect.java
+/Users/Kien/Documents/hyf java/projectHYF/finalProjectGameHYF/game-project/src/main/java/com/game/hyf/aspects/LoggingAspect.java
 /Users/Kien/Documents/hyf java/projectHYF/finalProjectGameHYF/game-project/src/main/java/com/game/hyf/config/SecurityConfig.java
 /Users/Kien/Documents/hyf java/projectHYF/finalProjectGameHYF/game-project/src/main/java/com/game/hyf/controller/GameController.java
 /Users/Kien/Documents/hyf java/projectHYF/finalProjectGameHYF/game-project/src/main/java/com/game/hyf/controller/GamePlatformController.java
@@ -43,6 +45,7 @@
 /Users/Kien/Documents/hyf java/projectHYF/finalProjectGameHYF/game-project/src/main/java/com/game/hyf/repository/PlatformRepository.java
 /Users/Kien/Documents/hyf java/projectHYF/finalProjectGameHYF/game-project/src/main/java/com/game/hyf/repository/ReviewRepository.java
 /Users/Kien/Documents/hyf java/projectHYF/finalProjectGameHYF/game-project/src/main/java/com/game/hyf/repository/UserRepository.java
+/Users/Kien/Documents/hyf java/projectHYF/finalProjectGameHYF/game-project/src/main/java/com/game/hyf/security/JwtUtils.java
 /Users/Kien/Documents/hyf java/projectHYF/finalProjectGameHYF/game-project/src/main/java/com/game/hyf/service/GamePlatformService.java
 /Users/Kien/Documents/hyf java/projectHYF/finalProjectGameHYF/game-project/src/main/java/com/game/hyf/service/GameService.java
 /Users/Kien/Documents/hyf java/projectHYF/finalProjectGameHYF/game-project/src/main/java/com/game/hyf/service/PlatformService.java

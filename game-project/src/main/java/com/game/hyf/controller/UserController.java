@@ -36,6 +36,7 @@ public class UserController {
         return ResponseEntity.ok(service.getUserById(id));
     }
 
+    /* User creation and login are handled in AuthController since they involve authentication logic.
     @PostMapping
     public ResponseEntity<UserResponseDTO> create(
             @RequestBody @Valid UserCreateDTO dto
@@ -45,6 +46,7 @@ public class UserController {
                 .status(HttpStatus.CREATED)
                 .body(service.create(dto));
     }
+    */
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(

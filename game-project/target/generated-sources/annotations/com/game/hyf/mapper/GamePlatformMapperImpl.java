@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-05-12T03:03:33+0200",
-    comments = "version: 1.6.3, compiler: javac, environment: Java 25.0.2 (Homebrew)"
+    date = "2026-05-13T01:45:53+0200",
+    comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.46.0.v20260407-0427, environment: Java 21.0.10 (Eclipse Adoptium)"
 )
 @Component
 public class GamePlatformMapperImpl implements GamePlatformMapper {
@@ -24,9 +24,9 @@ public class GamePlatformMapperImpl implements GamePlatformMapper {
 
         GamePlatform.GamePlatformBuilder gamePlatform = GamePlatform.builder();
 
+        gamePlatform.format( dto.getFormat() );
         gamePlatform.id( dto.getId() );
         gamePlatform.price( dto.getPrice() );
-        gamePlatform.format( dto.getFormat() );
 
         return gamePlatform.build();
     }
@@ -41,11 +41,28 @@ public class GamePlatformMapperImpl implements GamePlatformMapper {
 
         gamePlatformResponseDTO.gameId( gamePlatformGameId( gamePlatform ) );
         gamePlatformResponseDTO.platformId( gamePlatformPlatformId( gamePlatform ) );
+        gamePlatformResponseDTO.format( gamePlatform.getFormat() );
         gamePlatformResponseDTO.id( gamePlatform.getId() );
         gamePlatformResponseDTO.price( gamePlatform.getPrice() );
-        gamePlatformResponseDTO.format( gamePlatform.getFormat() );
 
         return gamePlatformResponseDTO.build();
+    }
+
+    @Override
+    public void updateGamePlatformFromDto(GamePlatform entity, GamePlatformResponseDTO dto) {
+        if ( dto == null ) {
+            return;
+        }
+
+        if ( dto.getFormat() != null ) {
+            entity.setFormat( dto.getFormat() );
+        }
+        if ( dto.getId() != null ) {
+            entity.setId( dto.getId() );
+        }
+        if ( dto.getPrice() != null ) {
+            entity.setPrice( dto.getPrice() );
+        }
     }
 
     private UUID gamePlatformGameId(GamePlatform gamePlatform) {

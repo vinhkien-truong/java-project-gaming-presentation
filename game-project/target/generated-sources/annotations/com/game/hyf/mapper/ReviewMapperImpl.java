@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-05-12T03:03:33+0200",
-    comments = "version: 1.6.3, compiler: javac, environment: Java 25.0.2 (Homebrew)"
+    date = "2026-05-13T01:45:53+0200",
+    comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.46.0.v20260407-0427, environment: Java 21.0.10 (Eclipse Adoptium)"
 )
 @Component
 public class ReviewMapperImpl implements ReviewMapper {
@@ -24,9 +24,9 @@ public class ReviewMapperImpl implements ReviewMapper {
 
         Review.ReviewBuilder review = Review.builder();
 
+        review.comment( dto.getComment() );
         review.id( dto.getId() );
         review.rating( dto.getRating() );
-        review.comment( dto.getComment() );
 
         return review.build();
     }
@@ -42,10 +42,27 @@ public class ReviewMapperImpl implements ReviewMapper {
         reviewResponseDTO.gamePlatformId( reviewGamePlatformId( review ) );
         reviewResponseDTO.userId( reviewUserId( review ) );
         reviewResponseDTO.id( review.getId() );
-        reviewResponseDTO.rating( review.getRating() );
         reviewResponseDTO.comment( review.getComment() );
+        reviewResponseDTO.rating( review.getRating() );
 
         return reviewResponseDTO.build();
+    }
+
+    @Override
+    public void updateReviewFromDto(Review entity, ReviewResponseDTO dto) {
+        if ( dto == null ) {
+            return;
+        }
+
+        if ( dto.getComment() != null ) {
+            entity.setComment( dto.getComment() );
+        }
+        if ( dto.getId() != null ) {
+            entity.setId( dto.getId() );
+        }
+        if ( dto.getRating() != null ) {
+            entity.setRating( dto.getRating() );
+        }
     }
 
     private UUID reviewGamePlatformId(Review review) {
