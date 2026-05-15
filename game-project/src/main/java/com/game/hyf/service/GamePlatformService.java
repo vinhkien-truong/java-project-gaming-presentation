@@ -46,7 +46,7 @@ public class GamePlatformService {
 						}
 						return a.getManufacturer().compareToIgnoreCase(b.getManufacturer());
 					})
-                   .collect(Collectors.toList());
+                   .toList();
 	}
 
 	@Transactional(readOnly = true)

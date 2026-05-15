@@ -17,17 +17,16 @@ public interface GamePlatformMapper {
     GamePlatformResponseDTO toDTO(GamePlatform gamePlatform);
 
     // 2. Detail DTO mapping (The one with the list)
+    // MapStruct sees 'List<Review> reviews' in Entity and 'List<ReviewSummaryDTO> reviews' in DTO
     @Mapping(source = "game.id", target = "gameId")
     @Mapping(source = "platform.id", target = "platformId")
     @Mapping(source = "game.title", target = "gameName")
     @Mapping(source = "platform.name", target = "platformName")
     @Mapping(source = "platform.manufacturer", target = "manufacturer")
-    // REMOVED: @Mapping(source = "reviews", target = "reviews") 
-    // MapStruct handles List<Review> to List<ReviewSummaryDTO> automatically 
-    // because you have the toReviewSummaryDTO method below.
     GamePlatformDetailDTO toDetailDTO(GamePlatform gamePlatform);
 
     // 3. Individual Review mapping
+    // MapStruct uses this specific rule to transform each item in that list
     @Mapping(source = "user.username", target = "username")
     ReviewSummaryDTO toReviewSummaryDTO(Review review);
 

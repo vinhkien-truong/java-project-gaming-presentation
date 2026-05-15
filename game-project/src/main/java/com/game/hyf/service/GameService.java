@@ -45,8 +45,7 @@ public class GameService {
     public GameResponseDTO create(GameCreateDTO dto) {
 
         Game game = mapper.toEntity(dto);
-        //repository.save(game)
-        return mapper.toDTO(game);
+        return mapper.toDTO(repository.save(game));
     }
 
     @Transactional

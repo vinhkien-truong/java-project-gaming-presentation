@@ -14,6 +14,7 @@ import com.game.hyf.model.GamePlatform;
 
 public interface GamePlatformRepository extends JpaRepository<GamePlatform, UUID> {
     boolean existsByGameIdAndPlatformIdAndFormat(UUID gameId, UUID platformId, GameFormat format);
+    // Custom query to fetch GamePlatform with all its details (game, platform, reviews) in one go.
     @Query("SELECT gp FROM GamePlatform gp " +
            "LEFT JOIN FETCH gp.game " +
            "LEFT JOIN FETCH gp.platform " +

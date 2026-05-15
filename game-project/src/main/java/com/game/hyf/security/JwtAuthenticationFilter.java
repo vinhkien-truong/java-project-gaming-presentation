@@ -18,11 +18,23 @@ import java.io.IOException;
 import java.util.List;
 @Component
 @RequiredArgsConstructor
+// This filter intercepts incoming HTTP requests to validate JWT tokens and set the authentication context for authorized users.
+// It extends OncePerRequestFilter to ensure that the filter is executed once per request.
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtUtils jwtUtils;
     private final UserRepository userRepository;
 
+    /*
+        The doFilterInternal method is the core of this filter, where it performs the following steps:
+        1. It retrieves the "Authorization" header from the incoming HTTP request.
+        2. If the header is missing or does not start with "Bearer ", it simply continues the filter chain without setting any authentication (i.e., it allows unauthenticated requests to pass through).
+        3. If the header is present and starts with "Bearer ", it extracts the JWT token from the header.
+        4. It validates the token using the jwtUtils.isValid() method. If the token is valid, it proceeds to extract the subject (user identifier) from the token.
+        5. If a subject is found and there is no existing authentication in the security context, it retrieves the corresponding user from the database using the UserRepository.
+        6. If a user is found, it creates an authentication token (UsernamePasswordAuthenticationToken) with the user's details and authorities, and sets it in the SecurityContextHolder to establish the user's authentication for the current request.
+        7. Finally, it continues the filter chain to allow further processing of the request.
+    */
     @Override
     protected void doFilterInternal(HttpServletRequest request, 
                                     HttpServletResponse response, 

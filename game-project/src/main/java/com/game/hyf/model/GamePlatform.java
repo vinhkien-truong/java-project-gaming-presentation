@@ -45,5 +45,6 @@ public class GamePlatform {
     private Platform platform;
 
     @OneToMany(mappedBy = "gamePlatform") 
+    @OrderBy("rating DESC")
     private List<Review> reviews;
 }

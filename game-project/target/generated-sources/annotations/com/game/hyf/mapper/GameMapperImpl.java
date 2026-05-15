@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-05-13T16:31:30+0200",
-    comments = "version: 1.6.3, compiler: javac, environment: Java 25.0.2 (Homebrew)"
+    date = "2026-05-15T02:03:21+0200",
+    comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.46.0.v20260407-0427, environment: Java 21.0.10 (Eclipse Adoptium)"
 )
 @Component
 public class GameMapperImpl implements GameMapper {

@@ -14,7 +14,13 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class LoggingAspect {
-    // Pointcut to match all methods in controller and service packages
+    /*
+        * This aspect is designed to log method entry, exit, and execution time for all methods within the com.game.hyf.service and com.game.hyf.controller packages.
+         * The @Pointcut annotation defines a pointcut that matches all methods in the specified packages.
+         * The @Before advice logs the method entry along with the method name and arguments before the method is executed.
+         * The @Around advice measures and logs the execution time of the method, as well as the result returned by the method.
+         * The @AfterReturning advice logs the method exit along with the method name and the result returned by the method after it completes.
+    */
     @Pointcut("within(com.game.hyf.controller..*) || within(com.game.hyf.service..*)")
     public void applicationPackagePointcut() {}
 

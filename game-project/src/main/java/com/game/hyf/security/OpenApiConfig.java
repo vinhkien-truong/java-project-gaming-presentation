@@ -23,10 +23,15 @@ import org.springframework.context.annotation.Configuration;
     This class only affects the API documentation and testing experience.   
 */
 @Configuration
+// This class configures OpenAPI/Swagger documentation for the API, including a global security scheme for JWT Bearer tokens.
+// It uses the @OpenAPIDefinition annotation to set the API title and version, and to apply a security requirement globally.
 @OpenAPIDefinition(
     info = @Info(title = "My Game API", version = "v1"),
     security = @SecurityRequirement(name = "bearerAuth") // Applies security globally
 )
+// Define the security scheme for JWT Bearer tokens
+// The @SecurityScheme annotation defines the details of the JWT Bearer scheme, which will be used in the Swagger UI for authentication.
+// The name "bearerAuth" must match the name used in the @SecurityRequirement annotation above.
 @SecurityScheme(
     name = "bearerAuth",
     type = SecuritySchemeType.HTTP,
